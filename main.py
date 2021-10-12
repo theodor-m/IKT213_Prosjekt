@@ -21,6 +21,7 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import BatchNormalization
 from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten
 from keras.utils import normalize, to_categorical
+
 Artists = ['Pablo_Picasso', 'Rene_Magritte', 'Vincent_van_Gogh']
 img_dir = '~/datasets/modified/Artists/Lik mengde av bilder/'
 
