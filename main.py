@@ -7,3 +7,43 @@ source: Kaggle.com
 Description: Dataset includes paintings from 50 different artists.
 """
 
+import numpy as np
+import os
+import cv2 as cv
+import pandas as pd
+
+from sklearn.model_selection import train_test_split
+
+import PIL
+import PIL.Image
+import tensorflow as tf
+import pathlib
+
+from tensorflow import keras
+from tensorflow.keras import layers
+from tensorflow.keras.models import Sequential
+
+train_images = []
+train_labels = []
+shape = (500, 500)
+
+for artists in os.listdir('Artists'):
+    print(artists)
+    for filename in os.listdir('Artists/' + artists + '/train'):
+        # Splitting images and storing image label into list
+        img = cv.imread(os.path.join('Artists/' + artists + '/train/', filename))
+
+        train_labels.append(artists.replace('_', ' '))
+
+        img = cv.resize(img, shape)
+
+        train_images.append(img)
+
+train_labels = pd.get_dummies(train_labels).values
+
+train_images = np.array(train_images)
+
+x_train, x_val, y_train, y_val = train_test_split(train_images, train_labels, random_state=1)
+
+print('Execution complete')
+
