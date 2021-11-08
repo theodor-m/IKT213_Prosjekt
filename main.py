@@ -26,7 +26,7 @@ for artists in os.listdir('Artists'):
     print(artists)
     for filename in os.listdir('Artists/' + artists + '/train'):
         # Splitting images and storing image label into list
-        img = cv.imread(os.path.join('Artists/' + artists + '/train/', filename))
+        img = cv.imread(os.path.join('Artists/' + artists + '/train/', filename), 0)
 
         train_labels.append(artists.replace('_', ' '))
 
@@ -60,7 +60,7 @@ test_images = np.array(test_images)
 print('Execution complete: Test images added')
 
 model = Sequential()
-model.add(Conv2D(kernel_size=(3, 3), filters=32, activation='relu', input_shape=(500, 500, 3,)))
+model.add(Conv2D(kernel_size=(3, 3), filters=32, activation='relu', input_shape=(500, 500, 1,)))
 model.add(Conv2D(kernel_size=(3, 3), filters=30, activation='relu'))
 model.add(MaxPool2D(2, 2))
 model.add(Conv2D(filters=30,kernel_size = (3,3),activation='relu'))
