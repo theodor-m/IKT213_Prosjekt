@@ -76,7 +76,7 @@ model.add(Dense(3,activation = 'softmax'))
 model.compile(
     loss='categorical_crossentropy',
     metrics=['acc'],
-    optimizer='SGD'
+    optimizer='Adam'
 )
 
 model.summary()
