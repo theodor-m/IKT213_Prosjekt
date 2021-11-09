@@ -82,7 +82,7 @@ model.compile(
 
 model.summary()
 
-history = model.fit(x_train, y_train, epochs=50, batch_size=11, validation_data=(x_val, y_val))
+history = model.fit(x_train, y_train, epochs=15, batch_size=11, validation_data=(x_val, y_val))
 
 # summarize history for accuracy
 plt.plot(history.history['acc'])
