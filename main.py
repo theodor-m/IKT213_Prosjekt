@@ -20,7 +20,7 @@ from tensorflow.keras.models import Sequential
 
 train_images = []
 train_labels = []
-shape = (500, 500)
+shape = (64, 64)
 
 for artists in os.listdir('Artists'):
     print(artists)
@@ -60,7 +60,7 @@ test_images = np.array(test_images)
 print('Execution complete: Test images added')
 
 model = Sequential()
-model.add(Conv2D(kernel_size=(3, 3), filters=32, activation='tanh', input_shape=(500, 500, 3,)))
+model.add(Conv2D(kernel_size=(3, 3), filters=32, activation='tanh', input_shape=(64, 64, 3,)))
 model.add(Conv2D(kernel_size=(3, 3), filters=30, activation='tanh'))
 model.add(MaxPool2D(2, 2))
 model.add(Conv2D(filters=30,kernel_size = (3,3),activation='tanh'))
@@ -82,6 +82,7 @@ model.compile(
 model.summary()
 
 history = model.fit(x_train, y_train, epochs=50, batch_size=11, validation_data=(x_val, y_val))
+model.save("model", save_format="h5")
 
 # summarize history for accuracy
 plt.plot(history.history['acc'])
