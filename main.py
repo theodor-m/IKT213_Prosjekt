@@ -1,7 +1,8 @@
 """
 @author: Group 30; D. Kowalska, O. Luzon, X. Llani, T. Middleton
 
-dataset: Best authors of all Time
+dataset:
+source dataset: Best authors of all Time
 source: Kaggle.com
 
 Description: Dataset includes paintings from 50 different artists.
@@ -76,7 +77,7 @@ model.add(Dense(3,activation = 'softmax'))
 model.compile(
     loss='categorical_crossentropy',
     metrics=['acc'],
-    optimizer='SGD'
+    optimizer='Adadelta'
 )
 
 model.summary()
@@ -100,3 +101,6 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.show()
+
+# save the trained model
+model.save('trained-model.h5', include_optimizer=False)
