@@ -1,45 +1,34 @@
 import numpy as np
+import os
 from keras.preprocessing import image
 from tensorflow.python.keras.backend import argmax
 from tensorflow.python.keras.saving.save import load_model
-import cv2 as cv
-import os
+from tensorflow.keras.applications.resnet50 import preprocess_input, decode_predictions
+from tensorflow.keras.preprocessing import image
 
-model = load_model("./model")
+classNames = []
 
-test_images = []
-test_labels = []
-shape = (64, 64)
-allArtists = []
 for artists in os.listdir('Artists'):
-    print(f'Test Artist: {artists}')
-    allArtists.append(artists.replace('_', ' '))
-    for filename in os.listdir('Artists/' + artists + '/test'):
-        img = cv.imread(os.path.join('Artists/' + artists + '/test/', filename))
-
-        test_labels.append(artists.replace('_', ' '))
-
-        img = cv.resize(img, shape)
-
-        test_images.append(img)
-
-test_images = np.array(test_images)
+    classNames.append(artists.replace('_', ' '))
 
 
+def classify(img_path):
+    img = image.load_img(img_path, color_mode= "grayscale", target_size=(500, 500))
+    img_array = image.img_to_array(img)
 
-# load and resize image to 64x64
-test_image = image.load_img("Artists/Vincent_Van_Gogh/test/Vincent_Van_Gogh_174.jpg", target_size=(64,64))
+    img_batch = np.expand_dims(img_array, axis=0)
 
-# convert image to numpy array
-imageToPredict = image.img_to_array(test_image)
-# expand dimension of image
-imageToPredict = np.expand_dims(imageToPredict, axis=0)
-# making prediction with model
-predictions = model.predict(imageToPredict)
+    model = load_model("./trained-model.h5", compile=True)
+    prediction = model.predict(img_batch)
 
-classes = np.argmax(predictions, axis = 1)
+    print("################## Results of model inference ##################")
+    print("Artist prediction:" + " " + classNames[prediction.argmax()])
+    print("Probability distribution:")
+    for x in classNames:
+        print(x + ':' + " " + str(prediction[0][classNames.index(x)]))
+    
 
-print(allArtists)
-print("Prediction of artist for image:" + "\n" + allArtists[int(classes)])
+
+classify("Artists/Rene_Magritte/test/Rene_Magritte_175.jpg")
 
 
