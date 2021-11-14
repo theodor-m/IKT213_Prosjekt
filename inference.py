@@ -1,4 +1,5 @@
 import numpy as np
+import argparse
 import os
 from keras.preprocessing import image
 from tensorflow.python.keras.backend import argmax
@@ -26,9 +27,12 @@ def classify(img_path):
     print("Probability distribution:")
     for x in classNames:
         print(x + ':' + " " + str(prediction[0][classNames.index(x)]))
-    
 
+parser = argparse.ArgumentParser()
+parser.add_argument('file',
+                    help="Enter file location.")
+args = parser.parse_args()
 
-classify("Artists/Rene_Magritte/test/Rene_Magritte_175.jpg")
+classify(args.file)
 
 
