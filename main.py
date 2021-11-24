@@ -16,8 +16,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.layers import Dense, Conv2D, Flatten, MaxPool2D, Dropout
+from tensorflow.keras.layers import Dense, Conv2D, Flatten, MaxPool2D
 from tensorflow.keras.models import Sequential
 
 train_images = []
@@ -61,6 +60,7 @@ test_images = np.array(test_images)
 
 print('Execution complete: Test images added')
 
+# Build the Keras.Sequential Model
 model = Sequential()
 model.add(Conv2D(kernel_size=(3, 3), filters=32, activation='relu', input_shape=(500, 500, 1,)))
 model.add(Conv2D(kernel_size=(3, 3), filters=30, activation='relu'))
@@ -75,6 +75,7 @@ model.add(Dense(20,activation='relu'))
 model.add(Dense(15,activation='relu'))
 model.add(Dense(3,activation = 'softmax'))
 
+# Compile the model
 model.compile(
     loss='categorical_crossentropy',
     metrics=['acc'],
