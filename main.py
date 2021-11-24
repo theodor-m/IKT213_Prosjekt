@@ -1,10 +1,12 @@
 """
 @author: Group 30; D. Kowalska, O. Luzon, X. Llani, T. Middleton
 
-dataset: Best authors of all Time
+dataset: Best Artworks of All Time (modified)
+source dataset: Best Artworks of All Time
 source: Kaggle.com
 
-Description: Dataset includes paintings from 50 different artists.
+Description: Original dataset included paintings from 50 different artists.
+             Extracted 3x194 paintings for 3 different artists for project.
 """
 
 import numpy as np
@@ -14,19 +16,18 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.layers import Dense, Conv2D, Flatten, MaxPool2D, Dropout
+from tensorflow.keras.layers import Dense, Conv2D, Flatten, MaxPool2D
 from tensorflow.keras.models import Sequential
 
 train_images = []
 train_labels = []
-shape = (64, 64)
+shape = (500, 500)
 
 for artists in os.listdir('Artists'):
     print(artists)
     for filename in os.listdir('Artists/' + artists + '/train'):
         # Splitting images and storing image label into list
-        img = cv.imread(os.path.join('Artists/' + artists + '/train/', filename))
+        img = cv.imread(os.path.join('Artists/' + artists + '/train/', filename), 0)
 
         train_labels.append(artists.replace('_', ' '))
 
@@ -59,13 +60,14 @@ test_images = np.array(test_images)
 
 print('Execution complete: Test images added')
 
+# Build the Keras.Sequential Model
 model = Sequential()
-model.add(Conv2D(kernel_size=(3, 3), filters=32, activation='tanh', input_shape=(64, 64, 3,)))
-model.add(Conv2D(kernel_size=(3, 3), filters=30, activation='tanh'))
+model.add(Conv2D(kernel_size=(3, 3), filters=32, activation='relu', input_shape=(500, 500, 1,)))
+model.add(Conv2D(kernel_size=(3, 3), filters=30, activation='relu'))
 model.add(MaxPool2D(2, 2))
-model.add(Conv2D(filters=30,kernel_size = (3,3),activation='tanh'))
+model.add(Conv2D(filters=30,kernel_size = (3,3),activation='relu'))
 model.add(MaxPool2D(2,2))
-model.add(Conv2D(filters=30,kernel_size = (3,3),activation='tanh'))
+model.add(Conv2D(filters=30,kernel_size = (3,3),activation='relu'))
 
 model.add(Flatten())
 
@@ -73,16 +75,16 @@ model.add(Dense(20,activation='relu'))
 model.add(Dense(15,activation='relu'))
 model.add(Dense(3,activation = 'softmax'))
 
+# Compile the model
 model.compile(
     loss='categorical_crossentropy',
     metrics=['acc'],
-    optimizer='SGD'
+    optimizer='Adadelta'
 )
 
 model.summary()
 
-history = model.fit(x_train, y_train, epochs=50, batch_size=11, validation_data=(x_val, y_val))
-model.save("model", save_format="h5")
+history = model.fit(x_train, y_train, epochs=15, batch_size=11, validation_data=(x_val, y_val))
 
 # summarize history for accuracy
 plt.plot(history.history['acc'])
@@ -101,3 +103,6 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.show()
+
+# save the trained model
+model.save('trained-model.h5', include_optimizer=False)
