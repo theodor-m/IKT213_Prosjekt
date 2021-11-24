@@ -1,11 +1,12 @@
 """
 @author: Group 30; D. Kowalska, O. Luzon, X. Llani, T. Middleton
 
-dataset:
-source dataset: Best authors of all Time
+dataset: Best Artworks of All Time (modified)
+source dataset: Best Artworks of All Time
 source: Kaggle.com
 
-Description: Dataset includes paintings from 50 different artists.
+Description: Original dataset included paintings from 50 different artists.
+             Extracted 3x194 paintings for 3 different artists for project.
 """
 
 import numpy as np
@@ -21,7 +22,7 @@ from tensorflow.keras.models import Sequential
 
 train_images = []
 train_labels = []
-shape = (64, 64)
+shape = (500, 500)
 
 for artists in os.listdir('Artists'):
     print(artists)
